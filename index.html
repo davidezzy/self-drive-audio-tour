@@ -58,6 +58,7 @@ h2{font:700 13px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercas
   </div>
 
   <div class="now" aria-live="polite"><b>Now playing</b><div id="now">Nothing yet. Tap Start drive before you leave the carpark.</div></div>
+  <p class="note" id="speechStatus" aria-live="polite">Speech: idle</p>
 
   <div class="cell"><b>Voice</b>
     <select id="voiceSel" aria-label="Voice"><option>Default voice</option></select>
@@ -165,12 +166,19 @@ function nextStop(played){for(var i=0;i<STOPS.length;i++){var s=STOPS[i];if(!s.m
   speak(s)}
  var sinceTrigger={};
  function speak(s){
-  speaking=true;played[s.id]=true;store("played",JSON.stringify(played));
+  speaking=true;played[s.id]=true;store("played",JSON.stringify(played));var started=false;
   $("now").textContent=s.name+": "+s.text;render();
   if(!window.speechSynthesis){speaking=false;return}
   var u=new SpeechSynthesisUtterance(s.text);u.lang="en-AU";if(voice)u.voice=voice;u.rate=0.95;
-  u.onend=u.onerror=function(){speaking=false;pump()};
-  speechSynthesis.speak(u)}
+  curUtt=u;/* hold a reference so iOS does not garbage collect it mid-speech */
+  u.onstart=function(){started=true;setSpeech("Speaking: "+s.name)};
+  u.onend=function(){speaking=false;setSpeech("Finished: "+s.name);pump()};
+  u.onerror=function(e){speaking=false;setSpeech("Speech error ("+s.name+"): "+(e.error||"unknown"));pump()};
+  speechSynthesis.speak(u);
+  setSpeech("Asked phone to speak: "+s.name);
+  setTimeout(function(){if(!started&&speaking){speaking=false;setSpeech("Speech did not start for "+s.name+". Tap Play on that stop. Script is shown above.");pump()}},3000)}
+ var curUtt=null;
+ function setSpeech(t){var e=$("speechStatus");if(e)e.textContent="Speech: "+t}
 
  function onPos(p){
   last=p;
@@ -221,7 +229,9 @@ function nextStop(played){for(var i=0;i<STOPS.length;i++){var s=STOPS[i];if(!s.m
   if(simTimer){clearInterval(simTimer);simTimer=null}$("sim").textContent="Simulate drive";render()});
  $("sim").addEventListener("click",function(){
   if(simTimer){clearInterval(simTimer);simTimer=null;$("sim").textContent="Simulate drive";return}
-  if(window.speechSynthesis){speechSynthesis.cancel()}
+  /* unlock speech inside this tap: iOS can refuse speech started later from a timer */
+  speaking=false;
+  if(window.speechSynthesis){speechSynthesis.cancel();setTimeout(function(){speechSynthesis.speak(new SpeechSynthesisUtterance(" "))},150)}
   played={};queued={};queue.length=0;render();
   var route=STOPS.filter(function(s){return !s.manual}),seg=0,frac=0,speedMs=11;/* about 40 km/h */
   $("sim").textContent="Stop simulation";$("gps").textContent="Simulated";
