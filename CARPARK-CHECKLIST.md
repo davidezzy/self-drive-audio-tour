@@ -8,10 +8,9 @@ Fallback: https://davidezzy.github.io/self-drive-audio-tour/v0.html (old Orange-
 2. Ringer switch on, volume up, phone connected to the car by Bluetooth.
 3. Settings, Privacy, Location Services, Safari Websites: While Using the App, Precise Location on.
 4. Low Power Mode off. Phone on the charger and mounted.
-5. Pick Bathurst. Tap Test voice. Check the Speech line says Speaking and you hear it through the car.
-6. Tap Simulate drive. Every Bathurst stop should play in order. If the Speech line shows an error, screenshot it.
-7. Reset, then repeat for Orange.
-8. Load both towns once while you have signal so they are cached for the drive west of Bathurst.
+5. Pick Bathurst and tap Simulate drive. Check the Speech line says Speaking and you hear the intro through the car, then every stop plays in order. If the Speech line shows an error, screenshot it.
+6. Tap Reset, then repeat for Orange.
+7. Load both towns once while you have signal so they are cached for the drive west of Bathurst.
 
 ## Grok navigation test (parked, in the car)
 1. Open the app, pick Bathurst, open "Tell the car where to go (Grok)" and read the prompt aloud to Grok. Do not worry about reading it perfectly.
