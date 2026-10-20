@@ -1,0 +1,238 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Orange Drive Narrator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one phone column. Status strip on top, big Start button, ordered stop list that lights up as the car passes each stop. */
+:root{
+  --bg:#f3f4f6; --panel:#ffffff; --fg:#14202b; --muted:#5b6b7a; --line:#d6dce2;
+  --accent:#d9531e; --accent-fg:#ffffff; --ok:#1f7a4d; --warn:#9a6a00;
+  --font-display:"Avenir Next","Trebuchet MS",system-ui,sans-serif;
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e161d; --panel:#16212b; --fg:#eaf0f5; --muted:#9db0c0; --line:#26343f;
+  --accent:#ff7a3d; --accent-fg:#1a0d05; --ok:#58d08f; --warn:#e8b64a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e161d; --panel:#16212b; --fg:#eaf0f5; --muted:#9db0c0; --line:#26343f;
+  --accent:#ff7a3d; --accent-fg:#1a0d05; --ok:#58d08f; --warn:#e8b64a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.45 var(--font-body);
+  padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{font:700 26px/1.1 var(--font-display);margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0;font-size:14px}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.cell b{display:block;font:600 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.cell span{font:600 18px/1.2 var(--font-display);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+select{width:100%;font:16px var(--font-body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);min-height:48px}
+button{font:600 17px/1 var(--font-body);border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:14px 16px;min-height:48px}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-size:20px;padding:18px 16px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>button{flex:1 1 140px}
+.now{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-height:64px}
+.now b{display:block;font:600 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+li{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+li .t{font:600 17px/1.2 var(--font-display);min-width:0}
+li .d{color:var(--muted);font-size:13px;grid-column:1}
+li button{grid-row:1/3;grid-column:2;padding:10px 14px;min-height:44px;font-size:15px}
+li.done{opacity:.6}li.done .t::after{content:" played";color:var(--ok);font:600 12px var(--font-body);margin-left:6px}
+li.next{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+h2{font:700 13px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
+.note{font-size:13px;color:var(--muted)}
+.warn{color:var(--warn)}
+</style>
+
+</head><body><main>
+  <header>
+    <h1>Orange Drive Narrator</h1>
+    <p class="sub">Six stops from the station out to Duntryleague, roughly 3 km. Audio plays as you reach each one.</p>
+  </header>
+
+  <button id="start" class="primary" type="button">Start drive</button>
+
+  <div class="status" aria-live="polite">
+    <div class="cell"><b>GPS</b><span id="gps">Off</span></div>
+    <div class="cell"><b>Speed</b><span id="spd">0 km/h</span></div>
+    <div class="cell"><b>Next stop</b><span id="nxt">Station</span></div>
+    <div class="cell"><b>Distance</b><span id="dst">--</span></div>
+  </div>
+
+  <div class="now" aria-live="polite"><b>Now playing</b><div id="now">Nothing yet. Tap Start drive before you leave the carpark.</div></div>
+
+  <div class="cell"><b>Voice</b>
+    <select id="voiceSel" aria-label="Voice"><option>Default voice</option></select>
+    <button id="testVoice" type="button" style="margin-top:8px;width:100%">Test voice</button>
+    <p class="note" style="margin:8px 0 0">For a better voice: Settings, Accessibility, Spoken Content, Voices, English (Australia), then download a Premium or Enhanced one. Reload this page afterwards.</p>
+  </div>
+
+  <div class="row">
+    <button id="sim" type="button">Simulate drive</button>
+    <button id="stop" type="button">Stop audio</button>
+    <button id="reset" type="button">Reset</button>
+  </div>
+
+  <h2>Route in order</h2>
+  <ol id="list"></ol>
+
+  <h2>Extra story</h2>
+  <ol id="extras"></ol>
+
+  <p class="note" id="msg">Keep the screen on and this tab open while driving. Connect the phone to the car by Bluetooth. Stop locations come from Wikipedia and can be off by a block, so tap Play on any stop that is missed.</p>
+</main>
+
+<script>
+/*LOGIC-START*/
+var STOPS=[
+ {id:"intro",manual:true,hidden:true,name:"Welcome",lat:null,lon:null,
+  text:"Welcome to Orange. The town began life as Blackman's Swamp. In 1846 it was proclaimed a village and given the name Orange, and it became a municipality in 1860. You are about to cruise a classic grid of streets, with Summer Street as the main drag. First up, the railway station."},
+ {id:"station",name:"Railway station",where:"Peisley St",lat:-33.2868,lon:149.1036,
+  text:"Orange railway station opened on 19 April 1877, when the line was extended from Blayney. For three years this was the end of the line, until the tracks pushed on to Wellington in 1880. The two storey Victorian building is one of only four of its kind in New South Wales. The cast iron footbridge, from around 1910, is the oldest of its type still standing in the state."},
+ {id:"po",name:"Post office",where:"222 Summer St",lat:-33.2840,lon:149.1001,
+  text:"Orange Post Office was built between 1877 and 1879 and officially opened in February 1880. The Colonial Architect's Office, under James Barnet, designed it in a Victorian Free Classical style. Look for the central clock and the open belfry under a pointed pyramid roof. The northern side has an arched verandah and a classical porch."},
+ {id:"bank",name:"Old Union Bank",where:"84 Byng St",lat:-33.2814,lon:149.0969,
+  text:"On Byng Street is the former Union Bank of Australia. It opened in 1858 and is considered the first bank in Orange. It has had a busy life since, working as a police station, a school, a boarding house and flats. Today it holds offices and a restaurant, and it has been on the State Heritage Register since 1999."},
+ {id:"cook",name:"Cook Park",where:"Summer St",lat:-33.2832,lon:149.0899,
+  text:"Cook Park was once a swampy camping ground for travellers heading west. It was set aside as a reserve in 1854, proclaimed a park in 1873 and named after Captain Cook in 1882. Look for the bandstand from 1908 and the cast iron fountain from 1891. There is a small lake and more than 200 trees, many of them from overseas. A good spot for a leg stretch."},
+ {id:"berrilea",name:"Berrilea",where:"29 Summer St",lat:-33.2816,lon:149.0901,
+  text:"Near the park, at 29 Summer Street, is Berrilea, an Edwardian house built in 1902 for Mrs Robert Frost. J. J. Copeman designed it and J. H. Gain built it. The Uniting Church was given the house in 1983, and it has been on the State Heritage Register since 1999."},
+ {id:"duntry",name:"Duntryleague",where:"Woodward St",lat:-33.2772,lon:149.0819,
+  text:"Duntryleague is a mansion built for the merchant James Dalton, who commissioned the architect Benjamin Backhouse. The house was completed in 1876 and named after Dalton's birthplace in Ireland. The wider estate was built up between 1875 and 1890. The Orange Golf Club bought it in 1935 and still runs the golf course and clubhouse here. It has been on the State Heritage Register since 1999."}
+];
+var EXTRAS=[
+ {id:"banjo",manual:true,name:"Banjo Paterson",where:"Anywhere",
+  text:"Banjo Paterson was born on 17 February 1864 at Narrambla, near Orange. The town holds a Banjo Paterson Poetry Festival every year. His poem The Man from Snowy River first appeared in The Bulletin in April 1890, and made him a household name."},
+ {id:"moulder",manual:true,name:"Moulder Park",where:"Moulder St",
+  text:"Moulder Park has a miniature steam train and railway. It is also home to the last remnant of the old Gnoo Blas racetrack, the bridge at the former starting line. Gnoo Blas was a motor racing circuit out on Forest Road."}
+];
+var CFG={radiusM:120,lookaheadS:6,maxAcc:60,staleM:250};
+function hav(a,b,c,d){var R=6371000,r=Math.PI/180,dl=(c-a)*r,dn=(d-b)*r,
+ x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dn/2)*Math.sin(dn/2);
+ return 2*R*Math.asin(Math.sqrt(x));}
+function trigDist(speedMs){return Math.max(CFG.radiusM,(speedMs||0)*CFG.lookaheadS);}
+/* returns ids of unplayed route stops that should fire, in route order */
+function due(pos,played,queued){
+ var out=[];
+ for(var i=0;i<STOPS.length;i++){var s=STOPS[i];
+  if(s.manual||played[s.id]||queued[s.id])continue;
+  if(hav(pos.lat,pos.lon,s.lat,s.lon)<=trigDist(pos.speed))out.push(s.id);}
+ return out;}
+function nextStop(played){for(var i=0;i<STOPS.length;i++){var s=STOPS[i];if(!s.manual&&!played[s.id])return s;}return null;}
+/*LOGIC-END*/
+
+(function(){
+ var $=function(i){return document.getElementById(i)};
+ var played={},queued={},queue=[],speaking=false,watchId=null,wake=null,last=null,simTimer=null,voice=null;
+ function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}return null}
+ try{var p=JSON.parse(store("played")||"{}");if(p&&typeof p==="object")played=p}catch(e){}
+
+ function score(v){var n=(v.name||"")+" "+(v.voiceURI||"");var s=0;
+  if(/en[-_]AU/i.test(v.lang))s+=100;else if(/^en[-_](GB|NZ|IE|ZA)/i.test(v.lang))s+=40;else if(/^en/i.test(v.lang))s+=20;else return -1;
+  if(/premium/i.test(n))s+=30;else if(/enhanced|siri/i.test(n))s+=20;
+  if(/compact|novelty|eloquence|bad news|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph/i.test(n))s-=60;
+  return s}
+ function pickVoice(){var vs=((window.speechSynthesis&&speechSynthesis.getVoices())||[]).filter(function(v){return score(v)>0});
+  vs.sort(function(a,b){return score(b)-score(a)});
+  var sel=$("voiceSel");if(sel){sel.textContent="";vs.forEach(function(v,i){var o=document.createElement("option");o.value=v.voiceURI;o.textContent=v.name+" ("+v.lang+")";sel.appendChild(o)});
+   var saved=store("voice");var m=saved&&vs.filter(function(v){return v.voiceURI===saved})[0];
+   if(m)sel.value=m.voiceURI}
+  var chosen=sel&&sel.value?vs.filter(function(v){return v.voiceURI===sel.value})[0]:null;
+  voice=chosen||vs[0]||null}
+ if(window.speechSynthesis){speechSynthesis.onvoiceschanged=pickVoice}
+
+ function render(){
+  function item(s,isRoute){var li=document.createElement("li");
+   var nx=nextStop(played);if(isRoute&&nx&&nx.id===s.id)li.className="next";
+   if(played[s.id])li.className=(li.className+" done").trim();
+   var t=document.createElement("div");t.className="t";t.textContent=s.name;
+   var d=document.createElement("div");d.className="d";d.textContent=s.where||"";
+   var b=document.createElement("button");b.type="button";b.textContent="Play";
+   b.addEventListener("click",function(){enqueue(s.id,true)});
+   li.appendChild(t);li.appendChild(d);li.appendChild(b);return li}
+  var l=$("list");l.textContent="";STOPS.forEach(function(s){if(!s.hidden)l.appendChild(item(s,true))});
+  var e=$("extras");e.textContent="";EXTRAS.forEach(function(s){e.appendChild(item(s,false))});
+  var n=nextStop(played);$("nxt").textContent=n?n.name:"Done";
+ }
+ function byId(id){return STOPS.concat(EXTRAS).filter(function(s){return s.id===id})[0]}
+
+ function enqueue(id,force){
+  if(!force&&(played[id]||queued[id]))return;
+  queued[id]=true;queue.push(id);pump()}
+ function pump(){
+  if(speaking||!queue.length)return;
+  var id=queue.shift();delete queued[id];var s=byId(id);if(!s)return pump();
+  /* drop an auto stop that waited in the queue until the car is now far past it */
+  if(!s.manual&&last&&hav(last.lat,last.lon,s.lat,s.lon)>CFG.staleM&&sinceTrigger[id]&&Date.now()-sinceTrigger[id]>15000){return pump()}
+  speak(s)}
+ var sinceTrigger={};
+ function speak(s){
+  speaking=true;played[s.id]=true;store("played",JSON.stringify(played));
+  $("now").textContent=s.name+": "+s.text;render();
+  if(!window.speechSynthesis){speaking=false;return}
+  var u=new SpeechSynthesisUtterance(s.text);u.lang="en-AU";if(voice)u.voice=voice;u.rate=0.95;
+  u.onend=u.onerror=function(){speaking=false;pump()};
+  speechSynthesis.speak(u)}
+
+ function onPos(p){
+  last=p;
+  $("spd").textContent=Math.round((p.speed||0)*3.6)+" km/h";
+  var n=nextStop(played);
+  if(n)$("dst").textContent=Math.round(hav(p.lat,p.lon,n.lat,n.lon))+" m";
+  due(p,played,queued).forEach(function(id){sinceTrigger[id]=Date.now();enqueue(id,false)});
+ }
+ function startGps(){
+  if(!navigator.geolocation){$("gps").textContent="Unavailable";$("gps").className="warn";return}
+  $("gps").textContent="Searching";
+  watchId=navigator.geolocation.watchPosition(function(pos){
+   if(pos.coords.accuracy>CFG.maxAcc){$("gps").textContent="Weak ("+Math.round(pos.coords.accuracy)+" m)";return}
+   $("gps").textContent="Live";
+   var prev=startGps.prev,sp=pos.coords.speed;
+   if((sp==null||isNaN(sp))&&prev){var dt=(pos.timestamp-prev.t)/1000;if(dt>0)sp=hav(prev.lat,prev.lon,pos.coords.latitude,pos.coords.longitude)/dt}
+   startGps.prev={lat:pos.coords.latitude,lon:pos.coords.longitude,t:pos.timestamp};
+   onPos({lat:pos.coords.latitude,lon:pos.coords.longitude,speed:sp||0});
+  },function(err){$("gps").textContent=err.code===1?"Blocked":"No fix";$("gps").className="warn";
+   $("msg").textContent="Location is not available on this page ("+err.message+"). Use the Play buttons for each stop instead."},
+  {enableHighAccuracy:true,maximumAge:1000,timeout:20000})}
+ function keepAwake(){try{if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(w){wake=w}).catch(function(){})}}catch(e){}}
+ document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&watchId!==null)keepAwake()});
+
+ $("start").addEventListener("click",function(){
+  if(window.speechSynthesis){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(" ");speechSynthesis.speak(u)}
+  keepAwake();startGps();
+  if(!played.intro)enqueue("intro",false);
+  $("start").textContent="Drive running"; $("start").disabled=true});
+ $("voiceSel").addEventListener("change",function(){store("voice",$("voiceSel").value);pickVoice()});
+ $("testVoice").addEventListener("click",function(){
+  var n=$("now");
+  if(!window.speechSynthesis){n.textContent="This browser has no speech support. Open the page in Safari from a web address, not from the Files app or a preview.";return}
+  var count=speechSynthesis.getVoices().length;pickVoice();
+  n.textContent="Voices found: "+count+(voice?". Using "+voice.name+".":". None usable yet, trying the default.");
+  speechSynthesis.cancel();
+  setTimeout(function(){
+   var u=new SpeechSynthesisUtterance("Welcome to Orange. This is how the narration will sound in the car.");u.lang="en-AU";if(voice)u.voice=voice;
+   u.onstart=function(){n.textContent+=" Speaking."};
+   u.onerror=function(e){n.textContent+=" Speech error: "+(e.error||"unknown")+"."};
+   u.onend=function(){n.textContent+=" Done."};
+   speechSynthesis.speak(u);
+   setTimeout(function(){if(!speechSynthesis.speaking&&!speechSynthesis.pending)return;if(n.textContent.indexOf("Speaking")<0)n.textContent+=" Nothing started. Check the ringer switch and volume, then tap again."},1500)
+  },150)});
+ pickVoice();
+ $("stop").addEventListener("click",function(){queue.length=0;queued={};if(window.speechSynthesis)speechSynthesis.cancel();speaking=false});
+ $("reset").addEventListener("click",function(){played={};queued={};queue.length=0;store("played","{}");if(window.speechSynthesis)speechSynthesis.cancel();speaking=false;
+  if(simTimer){clearInterval(simTimer);simTimer=null}$("sim").textContent="Simulate drive";render()});
+ $("sim").addEventListener("click",function(){
+  if(simTimer){clearInterval(simTimer);simTimer=null;$("sim").textContent="Simulate drive";return}
+  if(window.speechSynthesis){speechSynthesis.cancel()}
+  played={};queued={};queue.length=0;render();
+  var route=STOPS.filter(function(s){return !s.manual}),seg=0,frac=0,speedMs=11;/* about 40 km/h */
+  $("sim").textContent="Stop simulation";$("gps").textContent="Simulated";
+  simTimer=setInterval(function(){
+   var a=route[seg],b=route[seg+1];if(!b){clearInterval(simTimer);simTimer=null;$("sim").textContent="Simulate drive";return}
+   var len=hav(a.lat,a.lon,b.lat,b.lon),step=(speedMs*4)/len;/* 4x time */
+   frac+=step;if(frac>=1){seg++;frac=0;b=route[seg]||b;a=route[seg]||a}
+   var A=route[Math.min(seg,route.length-1)],B=route[Math.min(seg+1,route.length-1)];
+   onPos({lat:A.lat+(B.lat-A.lat)*frac,lon:A.lon+(B.lon-A.lon)*frac,speed:speedMs});
+  },1000)});
+ render();
+})();
+</script>
+</body></html>

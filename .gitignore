@@ -1,0 +1,5 @@
+.env
+.DS_Store
+node_modules/
+claude-code-prompt-orange-narrator.md
+audio/*.tmp
