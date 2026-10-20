@@ -3,7 +3,7 @@
   if(typeof module==="object"&&module.exports)module.exports=api;
   else root.TourLogic=api;
 }(typeof self!=="undefined"?self:this,function(){
-  var CFG={radiusM:120,maxAcc:60,staleM:250,maxWaitMs:15000,headingTolerance:70};
+  var CFG={radiusM:150,maxAcc:60,staleM:250,maxWaitMs:15000,headingTolerance:70};
 
   function hav(a,b,c,d){
     var R=6371000,r=Math.PI/180,dl=(c-a)*r,dn=(d-b)*r;
