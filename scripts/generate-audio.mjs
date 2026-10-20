@@ -24,13 +24,23 @@ for(const ref of index.tours){
   }
 }
 if(dry){console.log(`Total: ${jobs.length} items, ${total} characters`);process.exit(0)}
-const env=envFile(),key=env.ELEVENLABS_API_KEY,voice=env.ELEVENLABS_VOICE_ID;
+const env=envFile(),key=env.ELEVENLABS_API_KEY,voice=process.env.ELEVENLABS_VOICE_ID||env.ELEVENLABS_VOICE_ID;
 if(!key||!voice)throw new Error("ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID are required");
 for(let i=0;i<jobs.length;i++){
   const job=jobs[i];
-  const response=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}`,{method:"POST",headers:{"xi-api-key":key,"Accept":"audio/mpeg","Content-Type":"application/json"},body:JSON.stringify({text:job.item.text,model_id:"eleven_multilingual_v2"})});
-  if(!response.ok){console.error(`HTTP ${response.status}: ${await response.text()}`);process.exit(1)}
-  fs.mkdirSync(path.dirname(job.output),{recursive:true});fs.writeFileSync(job.output,Buffer.from(await response.arrayBuffer()));
+  let response,body;
+  for(let attempt=1;attempt<=4;attempt++){
+    try{
+      response=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}`,{method:"POST",headers:{"xi-api-key":key,"Accept":"audio/mpeg","Content-Type":"application/json"},body:JSON.stringify({text:job.item.text,model_id:"eleven_multilingual_v2"}),signal:AbortSignal.timeout(60000)});
+      if(!response.ok){console.error(`HTTP ${response.status}: ${await response.text()}`);process.exit(1)}
+      body=Buffer.from(await response.arrayBuffer());break;
+    }catch(e){
+      console.error(`Network error on ${job.output} (attempt ${attempt}/4): ${e.cause&&e.cause.code||e.message}`);
+      if(attempt===4)process.exit(1);
+      await new Promise(resolve=>setTimeout(resolve,2000*attempt));
+    }
+  }
+  fs.mkdirSync(path.dirname(job.output),{recursive:true});fs.writeFileSync(job.output,body);
   console.log(`Wrote ${path.relative(root,job.output)}`);
   if(i<jobs.length-1)await new Promise(resolve=>setTimeout(resolve,500));
 }
