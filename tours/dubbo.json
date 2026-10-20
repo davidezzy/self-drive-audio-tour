@@ -1,0 +1,102 @@
+{
+  "id": "dubbo",
+  "name": "Dubbo",
+  "status": "ready",
+  "note": "Drive order is east to west through the CBD, a guess because the approach road is not known. Coordinates are from Wikipedia, cross-checked against OpenStreetMap (Nominatim) on 2026-10-20 where a match existed. Zoo and Dundullimal are manual stories.",
+  "intro": {
+    "id": "intro",
+    "name": "Welcome",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Dubbo"
+    ],
+    "text": "Welcome to Dubbo, called Dhubu in the Wiradjuri language. Wiradjuri people have lived in this area for over 40,000 years. The explorer John Oxley was the first European to report on it, in 1818, and the Dulhunty family settled on a property here in the early 1830s. Dubbo became a city in 1966, and it sits where the Newell, Mitchell and Golden highways meet."
+  },
+  "stops": [
+    {
+      "id": "station",
+      "name": "Railway station",
+      "where": "Talbragar St",
+      "lat": -32.2448,
+      "lon": 148.6095,
+      "coordSource": "https://en.wikipedia.org/wiki/Dubbo_railway_station",
+      "coordCheckedOsm": "OSM -32.2456365, 148.6082178, 152 m apart. FLAG: over 100 m, may fire early or late. Wikipedia point kept.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Dubbo_railway_station"
+      ],
+      "text": "Dubbo railway station opened on 1 February 1881. It was built of stone to a design from the office of John Whitton, the engineer for the NSW Government Railways. Dubbo was a big rail junction, where the Main Western line met lines to Molong and Coonamble, and it kept a large locomotive depot. The station has been on the State Heritage Register since 1999.",
+      "navName": "Dubbo Railway Station"
+    },
+    {
+      "id": "gaol",
+      "name": "Old Dubbo Gaol",
+      "where": "90 Macquarie St",
+      "lat": -32.2459,
+      "lon": 148.6025,
+      "coordSource": "https://en.wikipedia.org/wiki/Old_Dubbo_Gaol",
+      "coordCheckedOsm": "no OSM match, unverified",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Old_Dubbo_Gaol"
+      ],
+      "text": "Behind the high red brown brick wall at 90 Macquarie Street is the Old Dubbo Gaol, with a watchtower on its corner. It replaced earlier lock-ups from 1847 and 1862, and closed as a gaol in 1966. Plans to knock it down for an office block were dropped after local protests, and it reopened as a tourist attraction in 1974.",
+      "navName": "Old Dubbo Gaol, Macquarie Street"
+    },
+    {
+      "id": "milestone",
+      "name": "Milestone Hotel",
+      "where": "195 Macquarie St",
+      "lat": -32.2512,
+      "lon": 148.6002,
+      "coordSource": "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo",
+      "coordCheckedOsm": "OSM -32.2512458, 148.6002218, 5 m apart",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo"
+      ],
+      "text": "On the corner of Macquarie and Bultje Streets is the Milestone Hotel, built in 1882 in the Victorian Italianate style. It went up at the south end of Macquarie Street, just as the town started to shift north. Over the years it has also been called the Imperial Hotel, the Bushman's Home and Kemwah Court. It has been on the State Heritage Register since 1999.",
+      "navName": "Milestone Hotel, Macquarie Street"
+    },
+    {
+      "id": "ford",
+      "name": "L.H. Ford Bridge",
+      "where": "Mitchell Hwy",
+      "lat": -32.250777,
+      "lon": 148.595941,
+      "coordSource": "https://en.wikipedia.org/wiki/L.H._Ford_Bridge",
+      "coordCheckedOsm": "OSM -32.2514808, 148.5968325, 115 m apart. FLAG: long bridge, point likely differs by end",
+      "sources": [
+        "https://en.wikipedia.org/wiki/L.H._Ford_Bridge"
+      ],
+      "text": "The L.H. Ford Bridge carries the Mitchell Highway over the Macquarie River, which the Wiradjuri call Wambuul. It opened on 26 September 1969 and is named after Les Ford, a former mayor of Dubbo. At 613 metres it was the fourth longest highway bridge in New South Wales when it was finished, and it replaced an old wooden bridge.",
+      "navName": "L.H. Ford Bridge"
+    }
+  ],
+  "extras": [
+    {
+      "id": "zoo",
+      "name": "Taronga Western Plains Zoo",
+      "where": "Newell Hwy, west Dubbo",
+      "lat": -32.27188888888889,
+      "lon": 148.58722222222224,
+      "coordSource": "https://en.wikipedia.org/wiki/Taronga_Western_Plains_Zoo",
+      "coordCheckedOsm": "OSM -32.2820266, 148.579882, 1321 m apart. FLAG: large site, OSM point probably the entrance or centre. Manual only so no effect on triggers.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Taronga_Western_Plains_Zoo"
+      ],
+      "text": "Taronga Western Plains Zoo, about 5 kilometres from the city, opened on 28 February 1977. It spreads across 300 hectares of woodland and grassland, and hidden moats stand in for fences so the animals seem to share the space with you. It opened with 35 different animals from six countries. A great pick for a nearly five year old.",
+      "manual": true
+    },
+    {
+      "id": "dundullimal",
+      "name": "Dundullimal Homestead",
+      "where": "Obley Rd",
+      "lat": -32.28472,
+      "lon": 148.604465,
+      "coordSource": "https://en.wikipedia.org/wiki/Dundullimal_Homestead",
+      "coordCheckedOsm": "OSM -32.2857393, 148.6033923, 152 m apart. FLAG: over 100 m. Manual only.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Dundullimal_Homestead"
+      ],
+      "text": "Dundullimal Homestead, about 7 kilometres south of Dubbo on the Macquarie River, was built around 1842 by John Maughan. It is believed to be the oldest surviving slab hut house in Australia, and the National Trust looks after it. It began as a sheep station, in a district where squatters ran their stock well beyond the official limits of settlement.",
+      "manual": true
+    }
+  ]
+}

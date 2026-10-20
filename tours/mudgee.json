@@ -1,0 +1,60 @@
+{
+  "id": "mudgee",
+  "name": "Mudgee",
+  "status": "ready",
+  "note": "Drive order is a guess because the approach road is not known. Town Hall and Post Office are 130 m apart, so they share one stop at the midpoint of their two sourced coordinates. Coordinates are from Wikipedia, cross-checked against OpenStreetMap (Nominatim) on 2026-10-20 where a match existed.",
+  "intro": {
+    "id": "intro",
+    "name": "Welcome",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mudgee"
+    ],
+    "text": "Welcome to Mudgee, in the Cudgegong River valley. The Mudgee and Dabee clans of the Wiradjuri people lived here, and the name is thought to mean something like resting place or nest in the hills, though translations vary. James Blackman was the first British colonist to enter the district, in 1821. It is the largest town in the Mid-Western Regional Council area."
+  },
+  "stops": [
+    {
+      "id": "station",
+      "name": "Railway station",
+      "where": "Inglis St",
+      "lat": -32.6012,
+      "lon": 149.5877,
+      "coordSource": "https://en.wikipedia.org/wiki/Mudgee_railway_station",
+      "coordCheckedOsm": "OSM -32.6012297, 149.5874564, 23 m apart",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mudgee_railway_station"
+      ],
+      "text": "Mudgee railway station was designed by John Whitton and built in 1883 and 1884. Locals campaigned for a railway for nearly 25 years, and the line finally opened on 11 September 1884 with a procession, a picnic and a banquet. No trains run here now, but coaches link Lithgow and Coonabarabran.",
+      "navName": "Mudgee Railway Station"
+    },
+    {
+      "id": "stmarys",
+      "name": "St Mary's Church",
+      "where": "13 Church St",
+      "lat": -32.5915,
+      "lon": 149.5892,
+      "coordSource": "https://en.wikipedia.org/wiki/St_Mary%27s_Roman_Catholic_Church,_Mudgee",
+      "coordCheckedOsm": "no OSM match, unverified",
+      "sources": [
+        "https://en.wikipedia.org/wiki/St_Mary%27s_Roman_Catholic_Church,_Mudgee"
+      ],
+      "text": "St Mary's Church on Church Street was first built in 1857 and largely rebuilt between 1873 and 1876 to a design by the Bathurst architect Edward Gell. It opened on 11 November 1876, and the copper spire was added to the tower in 1911. Its organ was built in London in 1866 for a church in Randwick, and moved to Mudgee in 1907.",
+      "navName": "St Mary's Catholic Church, Church Street"
+    },
+    {
+      "id": "market",
+      "name": "Town Hall and Post Office",
+      "where": "Market St",
+      "lat": -32.59045,
+      "lon": 149.5865,
+      "coordSource": "https://en.wikipedia.org/wiki/Mudgee_Town_Hall",
+      "coordCheckedOsm": "Post Office OSM -32.590434, 149.585785, 4 m from its Wikipedia point. Town Hall no OSM match. Stop point is the midpoint of the two Wikipedia coordinates (-32.5905,149.5872 and -32.5904,149.5858).",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mudgee_Town_Hall",
+        "https://en.wikipedia.org/wiki/Mudgee_Post_Office"
+      ],
+      "text": "Market Street has two fine civic buildings a short walk apart. The Town Hall at number 64 was built in 1880 and is now the library and theatre. The Post Office at number 80 was designed by Alexander Dawson, built in 1862 and remodelled in 1902, when the colonnade and small tower were added. Both are on the State Heritage Register.",
+      "navName": "Mudgee Town Hall, Market Street"
+    }
+  ],
+  "extras": []
+}
