@@ -19,7 +19,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Orange_railway_station"
       ],
-      "text": "Orange railway station opened on 19 April 1877, when the line was extended from Blayney. For three years this was the end of the line, until the tracks pushed on to Wellington in 1880. The two storey Victorian building is one of only four of its kind in New South Wales. The cast iron footbridge, from around 1910, is the oldest of its type still standing in the state."
+      "text": "Orange railway station opened on 19 April 1877, when the line was extended from Blayney. For three years this was the end of the line, until the tracks pushed on to Wellington in 1880. The two storey Victorian building is one of only four of its kind in New South Wales. The cast iron footbridge, from around 1910, is the oldest of its type still standing in the state.",
+      "navName": "Orange Railway Station, Peisley Street"
     },
     {
       "id": "po",
@@ -32,7 +33,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Orange_Post_Office"
       ],
-      "text": "Orange Post Office was built between 1877 and 1879 and officially opened in February 1880. The Colonial Architect's Office, under James Barnet, designed it in a Victorian Free Classical style. Look for the central clock and the open belfry under a pointed pyramid roof. The northern side has an arched verandah and a classical porch."
+      "text": "Orange Post Office was built between 1877 and 1879 and officially opened in February 1880. The Colonial Architect's Office, under James Barnet, designed it in a Victorian Free Classical style. Look for the central clock and the open belfry under a pointed pyramid roof. The northern side has an arched verandah and a classical porch.",
+      "navName": "Orange Post Office, 222 Summer Street"
     },
     {
       "id": "bank",
@@ -45,7 +47,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Union_Bank_of_Australia_building,_Orange"
       ],
-      "text": "On Byng Street is the former Union Bank of Australia. It opened in 1858 and is considered the first bank in Orange. It has had a busy life since, working as a police station, a school, a boarding house and flats. Today it holds offices and a restaurant, and it has been on the State Heritage Register since 1999."
+      "text": "On Byng Street is the former Union Bank of Australia. It opened in 1858 and is considered the first bank in Orange. It has had a busy life since, working as a police station, a school, a boarding house and flats. Today it holds offices and a restaurant, and it has been on the State Heritage Register since 1999.",
+      "navName": "Old Union Bank, 84 Byng Street"
     },
     {
       "id": "cook",
@@ -58,7 +61,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Cook_Park,_Orange"
       ],
-      "text": "Cook Park was once a swampy camping ground for travellers heading west. It was set aside as a reserve in 1854, proclaimed a park in 1873 and named after Captain Cook in 1882. Look for the bandstand from 1908 and the cast iron fountain from 1891. There is a small lake and more than 200 trees, many of them from overseas. A good spot for a leg stretch."
+      "text": "Cook Park was once a swampy camping ground for travellers heading west. It was set aside as a reserve in 1854, proclaimed a park in 1873 and named after Captain Cook in 1882. Look for the bandstand from 1908 and the cast iron fountain from 1891. There is a small lake and more than 200 trees, many of them from overseas. A good spot for a leg stretch.",
+      "navName": "Cook Park, Summer Street"
     },
     {
       "id": "berrilea",
@@ -71,7 +75,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Berrilea"
       ],
-      "text": "Near the park, at 29 Summer Street, is Berrilea, an Edwardian house built in 1902 for Mrs Robert Frost. J. J. Copeman designed it and J. H. Gain built it. The Uniting Church was given the house in 1983, and it has been on the State Heritage Register since 1999."
+      "text": "Near the park, at 29 Summer Street, is Berrilea, an Edwardian house built in 1902 for Mrs Robert Frost. J. J. Copeman designed it and J. H. Gain built it. The Uniting Church was given the house in 1983, and it has been on the State Heritage Register since 1999.",
+      "navName": "Berrilea, 29 Summer Street"
     },
     {
       "id": "duntry",
@@ -84,7 +89,8 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Duntryleague"
       ],
-      "text": "Duntryleague is a mansion built for the merchant James Dalton, who commissioned the architect Benjamin Backhouse. The house was completed in 1876 and named after Dalton's birthplace in Ireland. The wider estate was built up between 1875 and 1890. The Orange Golf Club bought it in 1935 and still runs the golf course and clubhouse here. It has been on the State Heritage Register since 1999."
+      "text": "Duntryleague is a mansion built for the merchant James Dalton, who commissioned the architect Benjamin Backhouse. The house was completed in 1876 and named after Dalton's birthplace in Ireland. The wider estate was built up between 1875 and 1890. The Orange Golf Club bought it in 1935 and still runs the golf course and clubhouse here. It has been on the State Heritage Register since 1999.",
+      "navName": "Duntryleague, Woodward Street"
     }
   ],
   "extras": [
@@ -102,5 +108,12 @@
       "sources": [],
       "text": "Moulder Park has a miniature steam train and railway. It is also home to the last remnant of the old Gnoo Blas racetrack, the bridge at the former starting line. Gnoo Blas was a motor racing circuit out on Forest Road."
     }
-  ]
+  ],
+  "destination": {
+    "name": "Orange Adventure Playground",
+    "where": "Northern Distributor Road, Bletchington",
+    "lat": -33.2544903,
+    "lon": 149.0970012,
+    "source": "https://nominatim.openstreetmap.org/ (OpenStreetMap playground node, searched 2026-10-20)"
+  }
 }

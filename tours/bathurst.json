@@ -6,7 +6,9 @@
   "intro": {
     "id": "intro",
     "name": "Welcome",
-    "sources": ["https://en.wikipedia.org/wiki/Bathurst,_New_South_Wales"],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Bathurst,_New_South_Wales"
+    ],
     "text": "Welcome to Bathurst, on Wiradjuri country known as dalman, the place of plenty. Governor Lachlan Macquarie raised the flag here on 7 May 1815, which makes this the oldest inland settlement in Australia. Gold found nearby in 1851 sparked the country's first gold rush, and plenty of grand buildings from that era still line the streets."
   },
   "stops": [
@@ -18,8 +20,11 @@
       "lon": 149.592,
       "coordSource": "https://en.wikipedia.org/wiki/Denison_Bridge",
       "coordCheckedOsm": "OSM -33.4170297, 149.5920552, 20 m apart",
-      "sources": ["https://en.wikipedia.org/wiki/Denison_Bridge"],
-      "text": "Nearby is the Denison Bridge, now a footbridge over the Macquarie River. The first bridge here opened on 1 January 1856, and a roasted bullock fed a crowd of 3000. A flood washed it away in 1867. The iron truss replacement, finished in 1870, carried the Great Western Highway for over 120 years and is the fourth oldest metal truss bridge in Australia."
+      "sources": [
+        "https://en.wikipedia.org/wiki/Denison_Bridge"
+      ],
+      "text": "Nearby is the Denison Bridge, now a footbridge over the Macquarie River. The first bridge here opened on 1 January 1856, and a roasted bullock fed a crowd of 3000. A flood washed it away in 1867. The iron truss replacement, finished in 1870, carried the Great Western Highway for over 120 years and is the fourth oldest metal truss bridge in Australia.",
+      "navName": "Denison Bridge"
     },
     {
       "id": "royal",
@@ -29,8 +34,11 @@
       "lon": 149.5803,
       "coordSource": "https://en.wikipedia.org/wiki/Royal_Hotel,_Bathurst",
       "coordCheckedOsm": "no OSM match found, unverified",
-      "sources": ["https://en.wikipedia.org/wiki/Royal_Hotel,_Bathurst"],
-      "text": "Look for the former Royal Hotel at 108 William Street. A hotel stood here in the 1840s, and the three storey balconies with their lacy cast iron were added in the 1880s. By 1893 it could put up 75 guests. It closed in the early 1960s and has been on the State Heritage Register since 1999."
+      "sources": [
+        "https://en.wikipedia.org/wiki/Royal_Hotel,_Bathurst"
+      ],
+      "text": "Look for the former Royal Hotel at 108 William Street. A hotel stood here in the 1840s, and the three storey balconies with their lacy cast iron were added in the 1880s. By 1893 it could put up 75 guests. It closed in the early 1960s and has been on the State Heritage Register since 1999.",
+      "navName": "Royal Hotel, 108 William Street"
     },
     {
       "id": "courthouse",
@@ -44,7 +52,8 @@
         "https://en.wikipedia.org/wiki/Bathurst_Courthouse",
         "https://en.wikipedia.org/wiki/Bathurst_War_Memorial_Carillon"
       ],
-      "text": "Look for the domed tower of the Bathurst Courthouse, finished in 1880 to a design by James Barnet, with its clock tower added in 1900. Close by on Kings Parade is the war memorial carillon from 1933. It now holds 47 bells, 12 of them added in 2018, so listen out for them."
+      "text": "Look for the domed tower of the Bathurst Courthouse, finished in 1880 to a design by James Barnet, with its clock tower added in 1900. Close by on Kings Parade is the war memorial carillon from 1933. It now holds 47 bells, 12 of them added in 2018, so listen out for them.",
+      "navName": "Bathurst Courthouse, Russell Street"
     },
     {
       "id": "cathedral",
@@ -54,8 +63,11 @@
       "lon": 149.5769,
       "coordSource": "https://en.wikipedia.org/wiki/Cathedral_of_St_Michael_and_St_John",
       "coordCheckedOsm": "OSM -33.4199609, 149.5771709, 26 m apart",
-      "sources": ["https://en.wikipedia.org/wiki/Cathedral_of_St_Michael_and_St_John"],
-      "text": "The Cathedral of Saints Michael and John at 107 William Street was designed by Charles Hansom and built between 1857 and 1861 by Edward Gell. It is the seat of the Catholic Bishop of Bathurst, and the town was already more than 40 years old when it was finished. It has been on the State Heritage Register since 2012."
+      "sources": [
+        "https://en.wikipedia.org/wiki/Cathedral_of_St_Michael_and_St_John"
+      ],
+      "text": "The Cathedral of Saints Michael and John at 107 William Street was designed by Charles Hansom and built between 1857 and 1861 by Edward Gell. It is the seat of the Catholic Bishop of Bathurst, and the town was already more than 40 years old when it was finished. It has been on the State Heritage Register since 2012.",
+      "navName": "Cathedral of St Michael and St John, 107 William Street"
     }
   ],
   "extras": [
@@ -68,7 +80,9 @@
       "coordSource": "https://en.wikipedia.org/wiki/Miss_Traill%27s_House",
       "coordCheckedOsm": "not checked",
       "manual": true,
-      "sources": ["https://en.wikipedia.org/wiki/Miss_Traill%27s_House"],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Miss_Traill%27s_House"
+      ],
       "text": "Miss Traill's House at 321 Russell Street was designed by Henry Kitchen and begun in 1845. It has served as a rectory and a school. Miss Ida Traill lived here from 1931 until 1976, then left it to the National Trust. It is now a museum with her family's furniture and horse racing memorabilia."
     },
     {
@@ -80,7 +94,9 @@
       "coordSource": "https://en.wikipedia.org/wiki/Chifley_Home",
       "coordCheckedOsm": "OSM -33.4326983, 149.5775753, 12 m apart",
       "manual": true,
-      "sources": ["https://en.wikipedia.org/wiki/Chifley_Home"],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Chifley_Home"
+      ],
       "text": "Ben Chifley, Prime Minister from 1945 to 1951, lived in a modest cottage at 10 Busby Street called Carnwath. He and his wife Elizabeth lived there from their marriage in 1914 until their deaths, his in 1951 and hers in 1962. It is now a museum run by Bathurst Regional Council."
     }
   ]
