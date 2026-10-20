@@ -2,3 +2,5 @@
 .DS_Store
 node_modules/
 claude-code-prompt-orange-narrator.md
+work-orders/
+orange-drive-narrator.html

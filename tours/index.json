@@ -1,0 +1,9 @@
+{
+  "default": "bathurst",
+  "tours": [
+    { "id": "bathurst", "name": "Bathurst", "file": "tours/bathurst.json" },
+    { "id": "orange", "name": "Orange", "file": "tours/orange.json" },
+    { "id": "dubbo", "name": "Dubbo", "file": "tours/dubbo.json" },
+    { "id": "mudgee", "name": "Mudgee", "file": "tours/mudgee.json" }
+  ]
+}

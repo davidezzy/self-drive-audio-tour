@@ -1,248 +1,54 @@
-<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Orange Drive Narrator</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Self-Drive Audio Tour</title>
 <style>
-/* Layout: one phone column. Status strip on top, big Start button, ordered stop list that lights up as the car passes each stop. */
-:root{
-  --bg:#f3f4f6; --panel:#ffffff; --fg:#14202b; --muted:#5b6b7a; --line:#d6dce2;
-  --accent:#d9531e; --accent-fg:#ffffff; --ok:#1f7a4d; --warn:#9a6a00;
-  --font-display:"Avenir Next","Trebuchet MS",system-ui,sans-serif;
-  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0e161d; --panel:#16212b; --fg:#eaf0f5; --muted:#9db0c0; --line:#26343f;
-  --accent:#ff7a3d; --accent-fg:#1a0d05; --ok:#58d08f; --warn:#e8b64a; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e161d; --panel:#16212b; --fg:#eaf0f5; --muted:#9db0c0; --line:#26343f;
-  --accent:#ff7a3d; --accent-fg:#1a0d05; --ok:#58d08f; --warn:#e8b64a; color-scheme:dark}
-body{background:var(--bg);color:var(--fg);font:16px/1.45 var(--font-body);
-  padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-h1{font:700 26px/1.1 var(--font-display);margin:0;text-wrap:balance}
-.sub{color:var(--muted);margin:4px 0 0;font-size:14px}
-.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cell{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
-.cell b{display:block;font:600 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.cell span{font:600 18px/1.2 var(--font-display);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
-select{width:100%;font:16px var(--font-body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);min-height:48px}
-button{font:600 17px/1 var(--font-body);border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:14px 16px;min-height:48px}
-button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-size:20px;padding:18px 16px}
-.row{display:flex;gap:10px;flex-wrap:wrap}.row>button{flex:1 1 140px}
-.now{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-height:64px}
-.now b{display:block;font:600 11px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-li{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
-li .t{font:600 17px/1.2 var(--font-display);min-width:0}
-li .d{color:var(--muted);font-size:13px;grid-column:1}
-li button{grid-row:1/3;grid-column:2;padding:10px 14px;min-height:44px;font-size:15px}
-li.done{opacity:.6}li.done .t::after{content:" played";color:var(--ok);font:600 12px var(--font-body);margin-left:6px}
-li.next{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
-h2{font:700 13px/1 var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:8px 0 0}
-.note{font-size:13px;color:var(--muted)}
-.warn{color:var(--warn)}
-</style>
-
-</head><body><main>
-  <header>
-    <h1>Orange Drive Narrator</h1>
-    <p class="sub">Six stops from the station out to Duntryleague, roughly 3 km. Audio plays as you reach each one.</p>
-  </header>
-
-  <button id="start" class="primary" type="button">Start drive</button>
-
-  <div class="status" aria-live="polite">
-    <div class="cell"><b>GPS</b><span id="gps">Off</span></div>
-    <div class="cell"><b>Speed</b><span id="spd">0 km/h</span></div>
-    <div class="cell"><b>Next stop</b><span id="nxt">Station</span></div>
-    <div class="cell"><b>Distance</b><span id="dst">--</span></div>
-  </div>
-
-  <div class="now" aria-live="polite"><b>Now playing</b><div id="now">Nothing yet. Tap Start drive before you leave the carpark.</div></div>
-  <p class="note" id="speechStatus" aria-live="polite">Speech: idle</p>
-
-  <div class="cell"><b>Voice</b>
-    <select id="voiceSel" aria-label="Voice"><option>Default voice</option></select>
-    <button id="testVoice" type="button" style="margin-top:8px;width:100%">Test voice</button>
-    <p class="note" style="margin:8px 0 0">For a better voice: Settings, Accessibility, Spoken Content, Voices, English (Australia), then download a Premium or Enhanced one. Reload this page afterwards.</p>
-  </div>
-
-  <div class="row">
-    <button id="sim" type="button">Simulate drive</button>
-    <button id="stop" type="button">Stop audio</button>
-    <button id="reset" type="button">Reset</button>
-  </div>
-
-  <h2>Route in order</h2>
-  <ol id="list"></ol>
-
-  <h2>Extra story</h2>
-  <ol id="extras"></ol>
-
-  <p class="note" id="msg">Keep the screen on and this tab open while driving. Connect the phone to the car by Bluetooth. Stop locations come from Wikipedia and can be off by a block, so tap Play on any stop that is missed.</p>
-</main>
-
-<script>
-/*LOGIC-START*/
-var STOPS=[
- {id:"intro",manual:true,hidden:true,name:"Welcome",lat:null,lon:null,
-  text:"Welcome to Orange. The town began life as Blackman's Swamp. In 1846 it was proclaimed a village and given the name Orange, and it became a municipality in 1860. You are about to cruise a classic grid of streets, with Summer Street as the main drag. First up, the railway station."},
- {id:"station",name:"Railway station",where:"Peisley St",lat:-33.2868,lon:149.1036,
-  text:"Orange railway station opened on 19 April 1877, when the line was extended from Blayney. For three years this was the end of the line, until the tracks pushed on to Wellington in 1880. The two storey Victorian building is one of only four of its kind in New South Wales. The cast iron footbridge, from around 1910, is the oldest of its type still standing in the state."},
- {id:"po",name:"Post office",where:"222 Summer St",lat:-33.2840,lon:149.1001,
-  text:"Orange Post Office was built between 1877 and 1879 and officially opened in February 1880. The Colonial Architect's Office, under James Barnet, designed it in a Victorian Free Classical style. Look for the central clock and the open belfry under a pointed pyramid roof. The northern side has an arched verandah and a classical porch."},
- {id:"bank",name:"Old Union Bank",where:"84 Byng St",lat:-33.2814,lon:149.0969,
-  text:"On Byng Street is the former Union Bank of Australia. It opened in 1858 and is considered the first bank in Orange. It has had a busy life since, working as a police station, a school, a boarding house and flats. Today it holds offices and a restaurant, and it has been on the State Heritage Register since 1999."},
- {id:"cook",name:"Cook Park",where:"Summer St",lat:-33.2832,lon:149.0899,
-  text:"Cook Park was once a swampy camping ground for travellers heading west. It was set aside as a reserve in 1854, proclaimed a park in 1873 and named after Captain Cook in 1882. Look for the bandstand from 1908 and the cast iron fountain from 1891. There is a small lake and more than 200 trees, many of them from overseas. A good spot for a leg stretch."},
- {id:"berrilea",name:"Berrilea",where:"29 Summer St",lat:-33.2816,lon:149.0901,
-  text:"Near the park, at 29 Summer Street, is Berrilea, an Edwardian house built in 1902 for Mrs Robert Frost. J. J. Copeman designed it and J. H. Gain built it. The Uniting Church was given the house in 1983, and it has been on the State Heritage Register since 1999."},
- {id:"duntry",name:"Duntryleague",where:"Woodward St",lat:-33.2772,lon:149.0819,
-  text:"Duntryleague is a mansion built for the merchant James Dalton, who commissioned the architect Benjamin Backhouse. The house was completed in 1876 and named after Dalton's birthplace in Ireland. The wider estate was built up between 1875 and 1890. The Orange Golf Club bought it in 1935 and still runs the golf course and clubhouse here. It has been on the State Heritage Register since 1999."}
-];
-var EXTRAS=[
- {id:"banjo",manual:true,name:"Banjo Paterson",where:"Anywhere",
-  text:"Banjo Paterson was born on 17 February 1864 at Narrambla, near Orange. The town holds a Banjo Paterson Poetry Festival every year. His poem The Man from Snowy River first appeared in The Bulletin in April 1890, and made him a household name."},
- {id:"moulder",manual:true,name:"Moulder Park",where:"Moulder St",
-  text:"Moulder Park has a miniature steam train and railway. It is also home to the last remnant of the old Gnoo Blas racetrack, the bridge at the former starting line. Gnoo Blas was a motor racing circuit out on Forest Road."}
-];
-var CFG={radiusM:120,lookaheadS:6,maxAcc:60,staleM:250};
-function hav(a,b,c,d){var R=6371000,r=Math.PI/180,dl=(c-a)*r,dn=(d-b)*r,
- x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dn/2)*Math.sin(dn/2);
- return 2*R*Math.asin(Math.sqrt(x));}
-function trigDist(speedMs){return Math.max(CFG.radiusM,(speedMs||0)*CFG.lookaheadS);}
-/* returns ids of unplayed route stops that should fire, in route order */
-function due(pos,played,queued){
- var out=[];
- for(var i=0;i<STOPS.length;i++){var s=STOPS[i];
-  if(s.manual||played[s.id]||queued[s.id])continue;
-  if(hav(pos.lat,pos.lon,s.lat,s.lon)<=trigDist(pos.speed))out.push(s.id);}
- return out;}
-function nextStop(played){for(var i=0;i<STOPS.length;i++){var s=STOPS[i];if(!s.manual&&!played[s.id])return s;}return null;}
-/*LOGIC-END*/
-
+:root{--bg:#f3f4f6;--panel:#fff;--fg:#14202b;--muted:#5b6b7a;--line:#d6dce2;--accent:#d9531e;--accent-fg:#fff;--ok:#1f7a4d;--warn:#8a5800;--font:system-ui,-apple-system,"Segoe UI",sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0e161d;--panel:#16212b;--fg:#eaf0f5;--muted:#9db0c0;--line:#344553;--accent:#ff7a3d;--accent-fg:#1a0d05;--ok:#58d08f;--warn:#ffd166;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 var(--font);padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}main{max-width:540px;margin:auto;display:flex;flex-direction:column;gap:14px}h1{font-size:27px;line-height:1.1;margin:0}.sub{color:var(--muted);margin:4px 0 0}.panel,.cell,.now,.read{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}.status{display:grid;grid-template-columns:1fr 1fr;gap:10px}.cell b,.now b,.panel>label:first-child{display:block;font-size:11px;line-height:1;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:7px}.cell span{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}select,button{width:100%;min-height:48px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--fg);font:600 16px var(--font);padding:11px 13px}select{background:var(--bg)}button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg);font-size:20px;padding:17px}.row{display:flex;gap:10px;flex-wrap:wrap}.row button{flex:1 1 140px}.check{display:flex;gap:10px;align-items:center}.check input{width:22px;height:22px}.check label{flex:1}.note{font-size:13px;color:var(--muted);margin:0}.warning{background:#fff3cd;color:#5f4300;border:1px solid #e0ba50;border-radius:10px;padding:12px}.hidden{display:none!important}h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:7px 0 0}ol{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}li{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}li .t{font-size:17px;font-weight:650}li .d{color:var(--muted);font-size:13px}li button{grid-column:2;grid-row:1/3;width:auto;min-height:44px}li.done{opacity:.65}li.done .t:after{content:" played";font-size:12px;color:var(--ok);margin-left:6px}li.skipped .t:after{content:" skipped";font-size:12px;color:var(--warn);margin-left:6px}li.next{border-color:var(--accent);box-shadow:inset 4px 0 var(--accent)}.read{font-size:19px;line-height:1.6}.read button{margin-top:12px}.coming{text-align:center;color:var(--muted);padding:22px}.warn{color:var(--warn)}
+</style></head><body><main>
+<header><h1>Self-Drive Audio Tour</h1><p class="sub" id="subtitle">Choose a town to begin.</p></header>
+<div class="panel"><label for="town">Town</label><select id="town" aria-label="Town"></select></div>
+<div id="wakeWarning" class="warning hidden">Screen may lock and stop GPS and audio. Keep the screen on and the phone charging.</div>
+<button id="start" class="primary" type="button">Start drive</button>
+<div class="status" aria-live="polite"><div class="cell"><b>GPS</b><span id="gps">Off</span></div><div class="cell"><b>Speed</b><span id="spd">0 km/h</span></div><div class="cell"><b>Next stop</b><span id="nxt">--</span></div><div class="cell"><b>Distance</b><span id="dst">--</span></div></div>
+<div class="now" aria-live="polite"><b>Now playing</b><div id="now">Nothing yet.</div></div>
+<p class="note" id="speechStatus" aria-live="polite">Speech: idle</p>
+<div id="readPanel" class="read hidden"><b>Read aloud</b><div id="readText"></div><button id="closeRead" type="button">Close</button></div>
+<div class="panel"><label for="voiceSel">Voice</label><select id="voiceSel"><option value="">Default voice</option></select><button id="testVoice" type="button" style="margin-top:8px">Test voice</button></div>
+<div class="panel check"><input id="headingCheck" type="checkbox"><label for="headingCheck">Only trigger when heading towards the stop</label></div>
+<div class="row"><button id="sim" type="button">Simulate drive</button><button id="stop" type="button">Stop audio</button><button id="reset" type="button">Reset</button></div>
+<h2>Route in order</h2><ol id="list"></ol><h2>Extra story</h2><ol id="extras"></ol>
+<p class="note" id="msg">Keep this tab open while driving. Tap Play if a stop is missed.</p>
+<audio id="audio" preload="metadata"></audio>
+</main><script src="logic.js"></script><script>
 (function(){
- var $=function(i){return document.getElementById(i)};
- var played={},queued={},queue=[],speaking=false,watchId=null,wake=null,last=null,simTimer=null,voice=null;
- function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}return null}
- try{var p=JSON.parse(store("played")||"{}");if(p&&typeof p==="object")played=p}catch(e){}
-
- function score(v){var n=(v.name||"")+" "+(v.voiceURI||"");var s=0;
-  if(/en[-_]AU/i.test(v.lang))s+=100;else if(/^en[-_](GB|NZ|IE|ZA)/i.test(v.lang))s+=40;else if(/^en/i.test(v.lang))s+=20;else return -1;
-  if(/premium/i.test(n))s+=30;else if(/enhanced|siri/i.test(n))s+=20;
-  if(/compact|novelty|eloquence|bad news|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph/i.test(n))s-=60;
-  return s}
- function pickVoice(){var vs=((window.speechSynthesis&&speechSynthesis.getVoices())||[]).filter(function(v){return score(v)>0});
-  vs.sort(function(a,b){return score(b)-score(a)});
-  var sel=$("voiceSel");if(sel){sel.textContent="";vs.forEach(function(v,i){var o=document.createElement("option");o.value=v.voiceURI;o.textContent=v.name+" ("+v.lang+")";sel.appendChild(o)});
-   var saved=store("voice");var m=saved&&vs.filter(function(v){return v.voiceURI===saved})[0];
-   if(m)sel.value=m.voiceURI}
-  var chosen=sel&&sel.value?vs.filter(function(v){return v.voiceURI===sel.value})[0]:null;
-  voice=chosen||vs[0]||null}
- if(window.speechSynthesis){speechSynthesis.onvoiceschanged=pickVoice}
-
- function render(){
-  function item(s,isRoute){var li=document.createElement("li");
-   var nx=nextStop(played);if(isRoute&&nx&&nx.id===s.id)li.className="next";
-   if(played[s.id])li.className=(li.className+" done").trim();
-   var t=document.createElement("div");t.className="t";t.textContent=s.name;
-   var d=document.createElement("div");d.className="d";d.textContent=s.where||"";
-   var b=document.createElement("button");b.type="button";b.textContent="Play";
-   b.addEventListener("click",function(){enqueue(s.id,true)});
-   li.appendChild(t);li.appendChild(d);li.appendChild(b);return li}
-  var l=$("list");l.textContent="";STOPS.forEach(function(s){if(!s.hidden)l.appendChild(item(s,true))});
-  var e=$("extras");e.textContent="";EXTRAS.forEach(function(s){e.appendChild(item(s,false))});
-  var n=nextStop(played);$("nxt").textContent=n?n.name:"Done";
- }
- function byId(id){return STOPS.concat(EXTRAS).filter(function(s){return s.id===id})[0]}
-
- function enqueue(id,force){
-  if(!force&&(played[id]||queued[id]))return;
-  queued[id]=true;queue.push(id);pump()}
- function pump(){
-  if(speaking||!queue.length)return;
-  var id=queue.shift();delete queued[id];var s=byId(id);if(!s)return pump();
-  /* drop an auto stop that waited in the queue until the car is now far past it */
-  if(!s.manual&&last&&hav(last.lat,last.lon,s.lat,s.lon)>CFG.staleM&&sinceTrigger[id]&&Date.now()-sinceTrigger[id]>15000){return pump()}
-  speak(s)}
- var sinceTrigger={};
- function speak(s){
-  speaking=true;played[s.id]=true;store("played",JSON.stringify(played));var started=false;
-  $("now").textContent=s.name+": "+s.text;render();
-  if(!window.speechSynthesis){speaking=false;return}
-  var u=new SpeechSynthesisUtterance(s.text);u.lang="en-AU";if(voice)u.voice=voice;u.rate=0.95;
-  curUtt=u;/* hold a reference so iOS does not garbage collect it mid-speech */
-  u.onstart=function(){started=true;setSpeech("Speaking: "+s.name)};
-  u.onend=function(){speaking=false;setSpeech("Finished: "+s.name);pump()};
-  u.onerror=function(e){speaking=false;setSpeech("Speech error ("+s.name+"): "+(e.error||"unknown"));pump()};
-  speechSynthesis.speak(u);
-  setSpeech("Asked phone to speak: "+s.name);
-  setTimeout(function(){if(!started&&speaking){speaking=false;setSpeech("Speech did not start for "+s.name+". Tap Play on that stop. Script is shown above.");pump()}},3000)}
- var curUtt=null;
- function setSpeech(t){var e=$("speechStatus");if(e)e.textContent="Speech: "+t}
-
- function onPos(p){
-  last=p;
-  $("spd").textContent=Math.round((p.speed||0)*3.6)+" km/h";
-  var n=nextStop(played);
-  if(n)$("dst").textContent=Math.round(hav(p.lat,p.lon,n.lat,n.lon))+" m";
-  due(p,played,queued).forEach(function(id){sinceTrigger[id]=Date.now();enqueue(id,false)});
- }
- function startGps(){
-  if(!navigator.geolocation){$("gps").textContent="Unavailable";$("gps").className="warn";return}
-  $("gps").textContent="Searching";
-  watchId=navigator.geolocation.watchPosition(function(pos){
-   if(pos.coords.accuracy>CFG.maxAcc){$("gps").textContent="Weak ("+Math.round(pos.coords.accuracy)+" m)";return}
-   $("gps").textContent="Live";
-   var prev=startGps.prev,sp=pos.coords.speed;
-   if((sp==null||isNaN(sp))&&prev){var dt=(pos.timestamp-prev.t)/1000;if(dt>0)sp=hav(prev.lat,prev.lon,pos.coords.latitude,pos.coords.longitude)/dt}
-   startGps.prev={lat:pos.coords.latitude,lon:pos.coords.longitude,t:pos.timestamp};
-   onPos({lat:pos.coords.latitude,lon:pos.coords.longitude,speed:sp||0});
-  },function(err){$("gps").textContent=err.code===1?"Blocked":"No fix";$("gps").className="warn";
-   $("msg").textContent="Location is not available on this page ("+err.message+"). Use the Play buttons for each stop instead."},
-  {enableHighAccuracy:true,maximumAge:1000,timeout:20000})}
- function keepAwake(){try{if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(w){wake=w}).catch(function(){})}}catch(e){}}
- document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&watchId!==null)keepAwake()});
-
- $("start").addEventListener("click",function(){
-  if(window.speechSynthesis){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(" ");speechSynthesis.speak(u)}
-  keepAwake();startGps();
-  if(!played.intro)enqueue("intro",false);
-  $("start").textContent="Drive running"; $("start").disabled=true});
- $("voiceSel").addEventListener("change",function(){store("voice",$("voiceSel").value);pickVoice()});
- $("testVoice").addEventListener("click",function(){
-  var n=$("now");
-  if(!window.speechSynthesis){n.textContent="This browser has no speech support. Open the page in Safari from a web address, not from the Files app or a preview.";return}
-  var count=speechSynthesis.getVoices().length;pickVoice();
-  n.textContent="Voices found: "+count+(voice?". Using "+voice.name+".":". None usable yet, trying the default.");
-  speechSynthesis.cancel();
-  setTimeout(function(){
-   var u=new SpeechSynthesisUtterance("Welcome to Orange. This is how the narration will sound in the car.");u.lang="en-AU";if(voice)u.voice=voice;
-   u.onstart=function(){n.textContent+=" Speaking."};
-   u.onerror=function(e){n.textContent+=" Speech error: "+(e.error||"unknown")+"."};
-   u.onend=function(){n.textContent+=" Done."};
-   speechSynthesis.speak(u);
-   setTimeout(function(){if(!speechSynthesis.speaking&&!speechSynthesis.pending)return;if(n.textContent.indexOf("Speaking")<0)n.textContent+=" Nothing started. Check the ringer switch and volume, then tap again."},1500)
-  },150)});
- pickVoice();
- $("stop").addEventListener("click",function(){queue.length=0;queued={};if(window.speechSynthesis)speechSynthesis.cancel();speaking=false});
- $("reset").addEventListener("click",function(){played={};queued={};queue.length=0;store("played","{}");if(window.speechSynthesis)speechSynthesis.cancel();speaking=false;
-  if(simTimer){clearInterval(simTimer);simTimer=null}$("sim").textContent="Simulate drive";render()});
- $("sim").addEventListener("click",function(){
-  if(simTimer){clearInterval(simTimer);simTimer=null;$("sim").textContent="Simulate drive";return}
-  /* unlock speech inside this tap: iOS can refuse speech started later from a timer */
-  speaking=false;
-  if(window.speechSynthesis){speechSynthesis.cancel();setTimeout(function(){speechSynthesis.speak(new SpeechSynthesisUtterance(" "))},150)}
-  played={};queued={};queue.length=0;render();
-  var route=STOPS.filter(function(s){return !s.manual}),seg=0,frac=0,speedMs=11;/* about 40 km/h */
-  $("sim").textContent="Stop simulation";$("gps").textContent="Simulated";
-  simTimer=setInterval(function(){
-   var a=route[seg],b=route[seg+1];if(!b){clearInterval(simTimer);simTimer=null;$("sim").textContent="Simulate drive";return}
-   var len=hav(a.lat,a.lon,b.lat,b.lon),step=(speedMs*4)/len;/* 4x time */
-   frac+=step;if(frac>=1){seg++;frac=0;b=route[seg]||b;a=route[seg]||a}
-   var A=route[Math.min(seg,route.length-1)],B=route[Math.min(seg+1,route.length-1)];
-   onPos({lat:A.lat+(B.lat-A.lat)*frac,lon:A.lon+(B.lon-A.lon)*frac,speed:speedMs});
-  },1000)});
- render();
-})();
-</script>
-</body></html>
+var L=window.TourLogic,$=function(id){return document.getElementById(id)},indexData=null,tour=null,played={},skipped={},queued={},queue=[],active=false,watchId=null,wake=null,last=null,previousFix=null,simTimer=null,voice=null,currentUtterances=[],audioItem=null;
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function playedKey(){return "played:"+(tour?tour.id:"none")}function skippedKey(){return "skipped:"+(tour?tour.id:"none")}
+function parseStored(k){try{return JSON.parse(get(k)||"{}")||{}}catch(e){return {}}}
+function allItems(){return (tour?[tour.intro].concat(tour.stops||[],tour.extras||[]):[]).filter(Boolean)}
+function byId(id){return allItems().filter(function(x){return x.id===id})[0]}
+function setSpeech(text,source){$("speechStatus").textContent="Speech: "+text+(source?" | Audio: "+source:"")}
+function score(v){var n=(v.name||"")+" "+(v.voiceURI||"");if(!/^en/i.test(v.lang))return -1;return (/en[-_]AU/i.test(v.lang)?100:20)+(/premium|enhanced|siri/i.test(n)?20:0)}
+function pickVoice(){if(!window.speechSynthesis)return;var vs=speechSynthesis.getVoices().filter(function(v){return score(v)>0}).sort(function(a,b){return score(b)-score(a)}),sel=$("voiceSel"),saved=get("voice");sel.textContent="";var def=document.createElement("option");def.value="";def.textContent="Default voice";sel.appendChild(def);vs.forEach(function(v){var o=document.createElement("option");o.value=v.voiceURI;o.textContent=v.name+" ("+v.lang+")";sel.appendChild(o)});if(saved)sel.value=saved;voice=vs.filter(function(v){return v.voiceURI===sel.value})[0]||vs[0]||null}
+function render(){var list=$("list"),extras=$("extras");list.textContent="";extras.textContent="";if(!tour||(tour.status==="empty"&&!(tour.stops||[]).length)){list.innerHTML='<li class="coming">Coming soon</li>';extras.innerHTML='<li class="coming">Coming soon</li>';$("nxt").textContent="--";return}var next=L.nextStop(tour.stops,played);function add(item,parent,route){var li=document.createElement("li");if(played[item.id])li.classList.add("done");if(skipped[item.id])li.classList.add("skipped");if(route&&next&&next.id===item.id)li.classList.add("next");var t=document.createElement("div");t.className="t";t.textContent=item.name;var d=document.createElement("div");d.className="d";d.textContent=item.where||"";var b=document.createElement("button");b.type="button";b.textContent="Play";b.addEventListener("click",function(){unlockAudio();enqueue(item,true)});li.append(t,d,b);parent.appendChild(li)}(tour.stops||[]).forEach(function(s){add(s,list,true)});(tour.extras||[]).forEach(function(s){add(s,extras,false)});$("nxt").textContent=next?next.name:"Done"}
+async function loadTown(id){stopEverything();var ref=indexData.tours.filter(function(t){return t.id===id})[0];if(!ref)return;set("tour",id);$("town").value=id;$("subtitle").textContent=ref.name+" audio tour";try{var response=await fetch(ref.file,{cache:"no-cache"});if(!response.ok)throw new Error("missing");tour=await response.json()}catch(e){tour={id:id,name:ref.name,status:"empty",stops:[],extras:[]}}played=parseStored(playedKey());skipped=parseStored(skippedKey());render()}
+async function load(){try{var response=await fetch("tours/index.json",{cache:"no-cache"});if(!response.ok)throw new Error();indexData=await response.json()}catch(e){$("msg").textContent="Tour list could not be loaded. Try again when online.";return}await Promise.all(indexData.tours.map(async function(ref){try{var r=await fetch(ref.file,{cache:"no-cache"});if(!r.ok)throw new Error();var data=await r.json();ref.ready=data.status!=="empty"&&(data.stops||[]).length>0}catch(e){ref.ready=false}}));var saved=get("tour"),select=$("town");select.textContent="";indexData.tours.forEach(function(ref){var o=document.createElement("option");o.value=ref.id;o.textContent=ref.name+(ref.ready?"":" (Coming soon)");select.appendChild(o)});var chosen=indexData.tours.some(function(t){return t.id===saved&&t.ready})?saved:indexData.default;if(!indexData.tours.some(function(t){return t.id===chosen&&t.ready}))chosen=(indexData.tours.filter(function(t){return t.ready})[0]||indexData.tours[0]).id;await loadTown(chosen)}
+function unlockAudio(){if(window.speechSynthesis&&!speechSynthesis.speaking&&!speechSynthesis.pending){try{speechSynthesis.speak(new SpeechSynthesisUtterance(" "))}catch(e){}}var a=$("audio");if(a.dataset.unlocked)return;a.dataset.unlocked="1";a.src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";var p=a.play();if(p&&p.catch)p.catch(function(){})}
+function enqueue(item,manual){if(!item)return;if(!manual&&(played[item.id]||queued[item.id]))return;queued[item.id]=true;queue.push({id:item.id,manual:!!manual,queuedAt:Date.now(),lat:item.lat,lon:item.lon,lastDistance:last&&item.lat!=null?L.hav(last.lat,last.lon,item.lat,item.lon):null});pump()}
+function markSkipped(entry){skipped[entry.id]=true;set(skippedKey(),JSON.stringify(skipped));render()}
+function pump(){if(active||!queue.length)return;var entry=queue.shift();delete queued[entry.id];if(L.queueDrop(entry,last,Date.now())){markSkipped(entry);return pump()}playItem(byId(entry.id),entry.manual)}
+function finish(){active=false;audioItem=null;pump()}
+function showRead(item,message){$("readText").textContent=item.text;$("readPanel").classList.remove("hidden");setSpeech(message||"unavailable","phone voice")}
+function sentences(text){var result=String(text||"").match(/[^.!?]+[.!?]+|[^.!?]+$/g);return (result||[]).map(function(s){return s.trim()}).filter(Boolean)}
+function speak(item){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){showRead(item);return finish()}var parts=sentences(item.text),i=0,errors=0;currentUtterances=[];function next(){if(i>=parts.length){if(errors===parts.length)showRead(item,"failed");else setSpeech("Finished: "+item.name,"phone voice");return finish()}var u=new SpeechSynthesisUtterance(parts[i++]),started=false,done=false;u.lang="en-AU";u.rate=.95;if(voice)u.voice=voice;currentUtterances.push(u);var timer=setTimeout(function(){if(!started&&!done){done=true;showRead(item,"did not start");speechSynthesis.cancel();finish()}},3000);u.onstart=function(){started=true;setSpeech("Speaking: "+item.name,"phone voice")};u.onend=function(){if(done)return;done=true;clearTimeout(timer);next()};u.onerror=function(){if(done)return;done=true;errors++;clearTimeout(timer);next()};speechSynthesis.speak(u)}next()}
+function playMp3(item){var a=$("audio"),fellBack=false;audioItem=item;a.onloadedmetadata=function(){if(isFinite(a.duration))item.duration=a.duration};function fallback(){if(fellBack||audioItem!==item)return;fellBack=true;a.pause();a.removeAttribute("src");a.load();setSpeech("MP3 unavailable, using phone voice","phone voice");speak(item)}a.onerror=fallback;a.onstalled=fallback;a.onended=function(){setSpeech("Finished: "+item.name,"mp3");finish()};a.src="audio/"+encodeURIComponent(tour.id)+"/"+encodeURIComponent(item.id)+".mp3";a.load();var p=a.play();if(p)p.then(function(){setSpeech("Playing: "+item.name,"mp3")}).catch(fallback)}
+function playItem(item,manual){if(!item)return finish();active=true;if(manual){delete skipped[item.id];set(skippedKey(),JSON.stringify(skipped))}played[item.id]=true;set(playedKey(),JSON.stringify(played));$("now").textContent=item.name+": "+item.text;render();playMp3(item)}
+function stopEverything(){queue.length=0;queued={};active=false;if(simTimer){clearInterval(simTimer);simTimer=null}if(window.speechSynthesis)speechSynthesis.cancel();var a=$("audio");a.pause();audioItem=null;currentUtterances=[]}
+function deriveHeading(prev,cur,provided){if(provided!=null&&isFinite(provided))return provided;if(prev&&L.hav(prev.lat,prev.lon,cur.lat,cur.lon)>=8)return L.bearing(prev.lat,prev.lon,cur.lat,cur.lon);return null}
+function onPosition(pos){if(!tour)return;queue.forEach(function(q){if(q.lat!=null){var distance=L.hav(pos.lat,pos.lon,q.lat,q.lon);q.distanceIncreasing=q.lastDistance!=null&&distance>q.lastDistance;q.lastDistance=distance}});last=pos;$("spd").textContent=Math.round((pos.speed||0)*3.6)+" km/h";var next=L.nextStop(tour.stops||[],played);$("dst").textContent=next?Math.round(L.hav(pos.lat,pos.lon,next.lat,next.lon))+" m":"--";L.due(pos,played,queued,tour.stops||[],$("headingCheck").checked).forEach(function(id){enqueue(byId(id),false)})}
+function startGps(){if(location.protocol!=="https:"&&!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)){$("gps").textContent="HTTPS needed";$("msg").textContent="GPS is unavailable because this page is not on https. Use the Play buttons instead.";return}if(!navigator.geolocation){$("gps").textContent="Unavailable";$("msg").textContent="This browser has no GPS support. Use the Play buttons instead.";return}$("gps").textContent="Searching";watchId=navigator.geolocation.watchPosition(function(p){if(!L.accuracyOkay(p.coords.accuracy)){$("gps").textContent="Weak ("+Math.round(p.coords.accuracy)+" m)";return}var cur={lat:p.coords.latitude,lon:p.coords.longitude,t:p.timestamp},speed=p.coords.speed;if((speed==null||!isFinite(speed))&&previousFix){var seconds=(p.timestamp-previousFix.t)/1000;if(seconds>0)speed=L.hav(previousFix.lat,previousFix.lon,cur.lat,cur.lon)/seconds}cur.speed=speed||0;cur.heading=deriveHeading(previousFix,cur,p.coords.heading);previousFix=cur;$("gps").textContent="Live";onPosition(cur)},function(e){$("gps").textContent=e.code===1?"Permission denied":"No fix";$("msg").textContent=e.code===1?"Location permission was denied. Enable it in browser settings or use Play.":"No GPS fix is available. Move outdoors or use Play."},{enableHighAccuracy:true,maximumAge:1000,timeout:20000})}
+function keepAwake(){if(!navigator.wakeLock){$("wakeWarning").classList.remove("hidden");return}navigator.wakeLock.request("screen").then(function(lock){wake=lock;$("wakeWarning").classList.add("hidden");lock.addEventListener("release",function(){wake=null})}).catch(function(){$("wakeWarning").classList.remove("hidden")})}
+$("town").addEventListener("change",function(){loadTown(this.value)});$("start").addEventListener("click",function(){unlockAudio();keepAwake();startGps();if(tour&&tour.intro&&!played[tour.intro.id])enqueue(tour.intro,false);this.textContent="Drive running";this.disabled=true});$("voiceSel").addEventListener("change",function(){set("voice",this.value);pickVoice()});$("testVoice").addEventListener("click",function(){unlockAudio();pickVoice();playItem({id:"voice-test",name:"Voice test",text:"Welcome. This is how the narration will sound in the car."},true)});$("stop").addEventListener("click",stopEverything);$("reset").addEventListener("click",function(){stopEverything();played={};skipped={};set(playedKey(),"{}");set(skippedKey(),"{}");$("sim").textContent="Simulate drive";render()});$("closeRead").addEventListener("click",function(){$("readPanel").classList.add("hidden")});
+$("sim").addEventListener("click",function(){unlockAudio();if(simTimer){clearInterval(simTimer);simTimer=null;this.textContent="Simulate drive";return}var route=tour&&(tour.stops||[]).filter(function(s){return !s.manual});if(!route||route.length<2){$("msg").textContent="This tour needs at least two route stops to simulate a drive.";return}stopEverything();played={};skipped={};render();var button=this,seg=0,frac=0,speed=11;button.textContent="Stop simulation";$("gps").textContent="Simulated";onPosition({lat:route[0].lat,lon:route[0].lon,speed:speed,heading:null});simTimer=setInterval(function(){var a=route[seg],b=route[seg+1];if(!b){clearInterval(simTimer);simTimer=null;button.textContent="Simulate drive";return}frac+=(speed*4)/L.hav(a.lat,a.lon,b.lat,b.lon);if(frac>=1){seg++;frac=0;a=route[seg];b=route[seg+1];if(!b){onPosition({lat:a.lat,lon:a.lon,speed:speed,heading:null});return}}onPosition({lat:a.lat+(b.lat-a.lat)*frac,lon:a.lon+(b.lon-a.lon)*frac,speed:speed,heading:L.bearing(a.lat,a.lon,b.lat,b.lon)})},1000)});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible"&&watchId!==null)keepAwake()});if(window.speechSynthesis)speechSynthesis.onvoiceschanged=pickVoice;pickVoice();load();if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){})
+}());
+</script></body></html>

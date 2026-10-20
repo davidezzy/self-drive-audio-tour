@@ -1,0 +1,106 @@
+{
+  "id": "orange",
+  "name": "Orange",
+  "status": "ready",
+  "intro": {
+    "id": "intro",
+    "name": "Welcome",
+    "text": "Welcome to Orange. The town began life as Blackman's Swamp. In 1846 it was proclaimed a village and given the name Orange, and it became a municipality in 1860. You are about to cruise a classic grid of streets, with Summer Street as the main drag. First up, the railway station."
+  },
+  "stops": [
+    {
+      "id": "station",
+      "name": "Railway station",
+      "where": "Peisley St",
+      "lat": -33.2868,
+      "lon": 149.1036,
+      "coordSource": "https://en.wikipedia.org/wiki/Orange_railway_station",
+      "coordCheckedOsm": "OSM -33.286771, 149.1036203, 4 m apart",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Orange_railway_station"
+      ],
+      "text": "Orange railway station opened on 19 April 1877, when the line was extended from Blayney. For three years this was the end of the line, until the tracks pushed on to Wellington in 1880. The two storey Victorian building is one of only four of its kind in New South Wales. The cast iron footbridge, from around 1910, is the oldest of its type still standing in the state."
+    },
+    {
+      "id": "po",
+      "name": "Post office",
+      "where": "222 Summer St",
+      "lat": -33.284,
+      "lon": 149.1001,
+      "coordSource": "https://en.wikipedia.org/wiki/Orange_Post_Office",
+      "coordCheckedOsm": "OSM -33.2838823, 149.1001117, 13 m apart",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Orange_Post_Office"
+      ],
+      "text": "Orange Post Office was built between 1877 and 1879 and officially opened in February 1880. The Colonial Architect's Office, under James Barnet, designed it in a Victorian Free Classical style. Look for the central clock and the open belfry under a pointed pyramid roof. The northern side has an arched verandah and a classical porch."
+    },
+    {
+      "id": "bank",
+      "name": "Old Union Bank",
+      "where": "84 Byng St",
+      "lat": -33.2814,
+      "lon": 149.0969,
+      "coordSource": "https://en.wikipedia.org/wiki/Union_Bank_of_Australia_building,_Orange",
+      "coordCheckedOsm": "no OSM match, unverified",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Union_Bank_of_Australia_building,_Orange"
+      ],
+      "text": "On Byng Street is the former Union Bank of Australia. It opened in 1858 and is considered the first bank in Orange. It has had a busy life since, working as a police station, a school, a boarding house and flats. Today it holds offices and a restaurant, and it has been on the State Heritage Register since 1999."
+    },
+    {
+      "id": "cook",
+      "name": "Cook Park",
+      "where": "Summer St",
+      "lat": -33.2832,
+      "lon": 149.0899,
+      "coordSource": "https://en.wikipedia.org/wiki/Cook_Park,_Orange",
+      "coordCheckedOsm": "OSM -33.2832048, 149.0899059, 1 m apart",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Cook_Park,_Orange"
+      ],
+      "text": "Cook Park was once a swampy camping ground for travellers heading west. It was set aside as a reserve in 1854, proclaimed a park in 1873 and named after Captain Cook in 1882. Look for the bandstand from 1908 and the cast iron fountain from 1891. There is a small lake and more than 200 trees, many of them from overseas. A good spot for a leg stretch."
+    },
+    {
+      "id": "berrilea",
+      "name": "Berrilea",
+      "where": "29 Summer St",
+      "lat": -33.2816,
+      "lon": 149.0901,
+      "coordSource": "https://en.wikipedia.org/wiki/Berrilea",
+      "coordCheckedOsm": "no OSM match, unverified",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Berrilea"
+      ],
+      "text": "Near the park, at 29 Summer Street, is Berrilea, an Edwardian house built in 1902 for Mrs Robert Frost. J. J. Copeman designed it and J. H. Gain built it. The Uniting Church was given the house in 1983, and it has been on the State Heritage Register since 1999."
+    },
+    {
+      "id": "duntry",
+      "name": "Duntryleague",
+      "where": "Woodward St",
+      "lat": -33.2772,
+      "lon": 149.0819,
+      "coordSource": "https://en.wikipedia.org/wiki/Duntryleague",
+      "coordCheckedOsm": "OSM -33.2784462, 149.081714, 140 m apart. FLAG: Wikipedia point may be off; OSM point likely the clubhouse. Keep Wikipedia point unless the carpark test shows a late trigger.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Duntryleague"
+      ],
+      "text": "Duntryleague is a mansion built for the merchant James Dalton, who commissioned the architect Benjamin Backhouse. The house was completed in 1876 and named after Dalton's birthplace in Ireland. The wider estate was built up between 1875 and 1890. The Orange Golf Club bought it in 1935 and still runs the golf course and clubhouse here. It has been on the State Heritage Register since 1999."
+    }
+  ],
+  "extras": [
+    {
+      "id": "banjo",
+      "name": "Banjo Paterson",
+      "where": "Anywhere",
+      "sources": [],
+      "text": "Banjo Paterson was born on 17 February 1864 at Narrambla, near Orange. The town holds a Banjo Paterson Poetry Festival every year. His poem The Man from Snowy River first appeared in The Bulletin in April 1890, and made him a household name."
+    },
+    {
+      "id": "moulder",
+      "name": "Moulder Park",
+      "where": "Moulder St",
+      "sources": [],
+      "text": "Moulder Park has a miniature steam train and railway. It is also home to the last remnant of the old Gnoo Blas racetrack, the bridge at the former starting line. Gnoo Blas was a motor racing circuit out on Forest Road."
+    }
+  ]
+}
