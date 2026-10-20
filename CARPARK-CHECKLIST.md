@@ -13,6 +13,12 @@ Fallback: https://davidezzy.github.io/self-drive-audio-tour/v0.html (old Orange-
 7. Reset, then repeat for Orange.
 8. Load both towns once while you have signal so they are cached for the drive west of Bathurst.
 
+## Grok navigation test (parked, in the car)
+1. Open the app, pick Bathurst, open "Tell the car where to go (Grok)" and read the prompt aloud to Grok. Do not worry about reading it perfectly.
+2. Check the car's route list shows all four stops in order. If it drops any, say them again in groups of two ("Add Denison Bridge, then the Royal Hotel, Bathurst NSW").
+3. Try the car browser (parked only): open grok.com or x.com/i/grok and see if it offers a text box you can paste the prompt into. This is untested. The car's browser locks while driving.
+4. Software needed: 2025.44.25 or later, Grok personality set to Assistant (owner reports, unverified for your car).
+
 ## On the road
 1. Tap Start drive before you pull out. Allow location when asked.
 2. GPS cell should read Live within 30 seconds. "Weak" means wait, "Blocked" means fix location permission.
