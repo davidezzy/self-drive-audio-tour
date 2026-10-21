@@ -28,7 +28,7 @@ Fallback: https://davidezzy.github.io/self-drive-audio-tour/v0.html (old Orange-
 ## Known risks
 - iPhone web pages cannot run reliably in the background. Locking the screen is the main failure to watch for.
 - Wikipedia coordinates can be a block out. Royal Hotel, Miss Traill's House, Old Union Bank and Berrilea have no OpenStreetMap match. Duntryleague differs by 140 m between Wikipedia and OpenStreetMap.
-- Bathurst CBD stops are 180 to 190 m apart. Slow traffic is fine. At 50 km/h or faster the Cathedral may be skipped, so tap Play on it.
+- Trigger radius is now 100 m (was 150), with a smaller speed lead. If a stop fires late or is missed on a road-snapped route, tap Play on it. Bathurst CBD stops are 180 to 190 m apart.
 - Phone voice sounds robotic until MP3s are generated. MP3s fall back to phone voice if missing.
-- Dubbo and Mudgee are empty until written.
+- Dubbo and Mudgee are written but have no MP3s yet (phone voice). Their stop order is a guess.
 - Not tested on a real iPhone yet.

@@ -2,7 +2,7 @@
   "id": "dubbo",
   "name": "Dubbo",
   "status": "ready",
-  "note": "Drive order is east to west through the CBD, a guess because the approach road is not known. Coordinates are from Wikipedia, cross-checked against OpenStreetMap (Nominatim) on 2026-10-20 where a match existed. Zoo and Dundullimal are manual stories.",
+  "note": "Drive order is east to west through the CBD, a guess because the approach road is not known. Coordinates are from Wikipedia, cross-checked against OpenStreetMap (Nominatim) on 2026-10-20 where a match existed. Banks stop combines two buildings 22 m apart; Milestone stop combines Talbragar Chambers 45 m away. Old Dubbo Gaol hangings deliberately left out (family friendly). Extras are manual stories.",
   "intro": {
     "id": "intro",
     "name": "Welcome",
@@ -23,7 +23,7 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Dubbo_railway_station"
       ],
-      "text": "Dubbo railway station opened on 1 February 1881. It was built of stone to a design from the office of John Whitton, the engineer for the NSW Government Railways. Dubbo was a big rail junction, where the Main Western line met lines to Molong and Coonamble, and it kept a large locomotive depot. The station has been on the State Heritage Register since 1999.",
+      "text": "Dubbo railway station opened on 1 February 1881. It was built of stone, to a design from the office of John Whitton, the NSW engineer in chief. Dubbo was a big junction, where the Main Western line met lines to Molong and Coonamble, and its locomotive depot was the limit for the heavier steam engines. The stone platform faces are rare, and the station has been heritage listed since 1999.",
       "navName": "Dubbo Railway Station"
     },
     {
@@ -41,17 +41,33 @@
       "navName": "Old Dubbo Gaol, Macquarie Street"
     },
     {
-      "id": "milestone",
-      "name": "Milestone Hotel",
-      "where": "195 Macquarie St",
-      "lat": -32.2512,
-      "lon": 148.6002,
-      "coordSource": "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo",
-      "coordCheckedOsm": "OSM -32.2512458, 148.6002218, 5 m apart",
+      "id": "banks",
+      "name": "Macquarie Street banks",
+      "where": "110 to 118 Macquarie St",
+      "lat": -32.24665,
+      "lon": 148.6018,
+      "coordSource": "https://en.wikipedia.org/wiki/Colonial_Mutual_Life_building,_Dubbo",
+      "coordCheckedOsm": "Wikipedia points -32.2467,148.6017 (CML) and -32.2466,148.6019 (NAB), 22 m apart so combined at midpoint. Not checked against OSM.",
       "sources": [
-        "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo"
+        "https://en.wikipedia.org/wiki/Colonial_Mutual_Life_building,_Dubbo",
+        "https://en.wikipedia.org/wiki/National_Australia_Bank_building,_Dubbo"
       ],
-      "text": "On the corner of Macquarie and Bultje Streets is the Milestone Hotel, built in 1882 in the Victorian Italianate style. It went up at the south end of Macquarie Street, just as the town started to shift north. Over the years it has also been called the Imperial Hotel, the Bushman's Home and Kemwah Court. It has been on the State Heritage Register since 1999.",
+      "text": "Look for two grand bank buildings on Macquarie Street. The Colonial Mutual Life building at number 118 opened on 23 February 1885 as the Australian Joint Stock Bank, and it won a place on the State Heritage Register in 1999 after a community campaign. Close by, at 110 to 114, is the former Commercial Banking Company building, built around 1906 and 1907 to a design by Laurie and Heath.",
+      "navName": "Colonial Mutual Life building, 118 Macquarie Street"
+    },
+    {
+      "id": "milestone",
+      "name": "Milestone Hotel and old bank",
+      "where": "195 Macquarie St",
+      "lat": -32.251,
+      "lon": 148.60025,
+      "coordSource": "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo",
+      "coordCheckedOsm": "Milestone OSM 5 m from Wikipedia point. Combined at midpoint with Talbragar Shire Council Chambers (Wikipedia -32.2508,148.6003, 45 m apart).",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Milestone_Hotel,_Dubbo",
+        "https://en.wikipedia.org/wiki/Talbragar_Shire_Council_Chambers"
+      ],
+      "text": "Two heritage buildings stand close together here. The Milestone Hotel, on the corner of Macquarie and Bultje Streets, was built in 1882 in the Victorian Italianate style. Nearby are the Talbragar Shire Council Chambers, built in 1867 as the first bank in Dubbo. That bank was the town's only one until 1876. Both are on the State Heritage Register.",
       "navName": "Milestone Hotel, Macquarie Street"
     },
     {
@@ -97,6 +113,51 @@
       ],
       "text": "Dundullimal Homestead, about 7 kilometres south of Dubbo on the Macquarie River, was built around 1842 by John Maughan. It is believed to be the oldest surviving slab hut house in Australia, and the National Trust looks after it. It began as a sheep station, in a district where squatters ran their stock well beyond the official limits of settlement.",
       "manual": true
+    },
+    {
+      "id": "cultural",
+      "name": "Western Plains Cultural Centre",
+      "where": "76 Wingewarra St",
+      "lat": -32.2496789,
+      "lon": 148.6099009,
+      "coordSource": "https://nominatim.openstreetmap.org/ (OpenStreetMap, searched 2026-10-21)",
+      "coordCheckedOsm": "OSM only, no Wikipedia article",
+      "manual": true,
+      "sources": [
+        "https://www.nsw.gov.au/visiting-and-exploring-nsw/walks-near-me/great-places/western-plains-centre",
+        "https://printsandprintmaking.gov.au/galleries/3582/",
+        "https://dubboregion.com.au/blog/10-things-to-see-and-do-for-free-in-the-dubbo-region"
+      ],
+      "text": "The Western Plains Cultural Centre sits beside Victoria Park. It opened on 10 February 2007 and holds a gallery, a museum and a community arts centre. The museum is in the old Dubbo High School hall from 1917. Look out for the wool wagon, described as Australia's largest and best preserved."
+    },
+    {
+      "id": "rfds",
+      "name": "Royal Flying Doctor Service",
+      "where": "21 Judy Jakins Dr, Dubbo Airport",
+      "lat": -32.2164918,
+      "lon": 148.5700505,
+      "coordSource": "https://nominatim.openstreetmap.org/ (OpenStreetMap, searched 2026-10-21)",
+      "coordCheckedOsm": "OSM only",
+      "manual": true,
+      "sources": [
+        "https://en.wikipedia.org/wiki/Dubbo",
+        "https://flyingdoctor.org.au/news/flying-doctor-marks-20-years-base-operations-dubbo"
+      ],
+      "text": "The Royal Flying Doctor Service base at Dubbo Airport has a visitor centre that opened in 2019. You can see a King Air 200 aircraft up close and try interactive displays about how doctors reach people in the outback. A great pick for a nearly five year old."
+    },
+    {
+      "id": "railbridge",
+      "name": "Macquarie River railway bridge",
+      "where": "Main Western line",
+      "lat": -32.2439,
+      "lon": 148.5997,
+      "coordSource": "https://en.wikipedia.org/wiki/Macquarie_River_railway_bridge,_Dubbo",
+      "coordCheckedOsm": "not checked",
+      "manual": true,
+      "sources": [
+        "https://en.wikipedia.org/wiki/Macquarie_River_railway_bridge,_Dubbo"
+      ],
+      "text": "The Macquarie River railway bridge was finished in 1884. It is a wrought iron lattice bridge with three continuous spans, the longest 48 metres. It was load tested on 23 April 1884 and went into service the next month."
     }
   ]
 }

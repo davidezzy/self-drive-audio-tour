@@ -4,9 +4,9 @@ const fs=require("node:fs");
 const L=require("../logic.js");
 
 test("trigger distance responds to speed and script length",()=>{
-  assert.equal(L.trigDist(5,{text:"short words"}),150);
-  assert.ok(L.trigDist(20,{text:Array(250).fill("word").join(" ")})>150);
-  assert.equal(L.trigDist(20,{duration:100,text:"short"}),800);
+  assert.equal(L.trigDist(5,{text:"short words"}),100);
+  assert.ok(L.trigDist(30,{text:Array(250).fill("word").join(" ")})>100);
+  assert.equal(L.trigDist(20,{duration:100,text:"short"}),400);
 });
 test("due preserves route order and prevents repeats",()=>{
   const stops=[{id:"a",lat:0,lon:0,text:"a"},{id:"b",lat:0,lon:0.0001,text:"b"}];

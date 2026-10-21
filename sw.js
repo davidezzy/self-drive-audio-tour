@@ -1,4 +1,4 @@
-var VERSION="tour-v1";
+var VERSION="tour-v2";
 var CORE=["./","./index.html","./logic.js","./tours/index.json"];
 self.addEventListener("install",function(event){
   event.waitUntil(fetch("./tours/index.json").then(function(r){return r.json()}).then(function(index){
